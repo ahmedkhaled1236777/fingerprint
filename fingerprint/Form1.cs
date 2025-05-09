@@ -147,13 +147,14 @@ namespace fingerprint
 
         private void label2_Click(object sender, EventArgs e)
         {
-
+           // uygyugy
         }
 
         private async void button2_Click(object sender, EventArgs e)
         {
             if (attendances.Count == 0)
             {
+                //hgghvghvghvgh
                 MessageBox.Show($"·« ÌÊÃœ Õ÷Ê— Ê«‰’—«› ›Ì  ﬂ «·„œÂ", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             }
