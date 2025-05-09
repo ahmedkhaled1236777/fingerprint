@@ -38,6 +38,7 @@
             label1 = new Label();
             label2 = new Label();
             button2 = new Button();
+            columnHeader4 = new ColumnHeader();
             SuspendLayout();
             // 
             // button1
@@ -53,7 +54,7 @@
             // listView1
             // 
             listView1.BackColor = SystemColors.InactiveCaption;
-            listView1.Columns.AddRange(new ColumnHeader[] { columnHeader2, columnHeader3, columnHeader1 });
+            listView1.Columns.AddRange(new ColumnHeader[] { columnHeader2, columnHeader3, columnHeader1, columnHeader4 });
             listView1.GridLines = true;
             listView1.Location = new Point(12, 138);
             listView1.Name = "listView1";
@@ -66,21 +67,21 @@
             // 
             // columnHeader2
             // 
-            columnHeader2.Text = "الاسم";
+            columnHeader2.Text = "م";
             columnHeader2.TextAlign = HorizontalAlignment.Center;
-            columnHeader2.Width = 320;
+            columnHeader2.Width = 50;
             // 
             // columnHeader3
             // 
-            columnHeader3.Text = "التاريخ والوقت";
+            columnHeader3.Text = "الاسم";
             columnHeader3.TextAlign = HorizontalAlignment.Center;
-            columnHeader3.Width = 320;
+            columnHeader3.Width = 300;
             // 
             // columnHeader1
             // 
-            columnHeader1.Text = "الحاله";
+            columnHeader1.Text = "التاريخ والوقت";
             columnHeader1.TextAlign = HorizontalAlignment.Center;
-            columnHeader1.Width = 130;
+            columnHeader1.Width = 300;
             // 
             // dateTimePicker1
             // 
@@ -126,6 +127,12 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
+            // columnHeader4
+            // 
+            columnHeader4.Text = "الحاله";
+            columnHeader4.TextAlign = HorizontalAlignment.Center;
+            columnHeader4.Width = 120;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -157,5 +164,6 @@
         private ColumnHeader columnHeader3;
         private ColumnHeader columnHeader1;
         private Button button2;
+        private ColumnHeader columnHeader4;
     }
 }

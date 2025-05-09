@@ -31,6 +31,7 @@ namespace fingerprint
         private void button1_Click(object sender, EventArgs e)
         {
             attendances.Clear();
+            int index = 1;
             // Configure these values for your Access file
             string accessFilePath = @"C:\Program Files (x86)\ZKTeco\att2000.mdb"; // or .mdb
             string tableName = "CHECKINOUT";
@@ -54,6 +55,8 @@ namespace fingerprint
                     OleDbCommand command = new OleDbCommand(query, connection);
                     OleDbCommand command2 = new OleDbCommand(query2, connection);
                     Dictionary<string, String> nameid = new Dictionary<string, string>();
+                    Dictionary<string, String> found = new Dictionary<string, string>();
+
                     using (OleDbDataReader reader2 = command2.ExecuteReader())
                     {
                         while (reader2.Read())
@@ -92,17 +95,20 @@ namespace fingerprint
                                     String type = $"{reader[1].ToString()}";
 
                                     ListViewItem lv = new ListViewItem();
+                                    lv.Text = $"{index }";
+                                    lv.SubItems.Add(nameid[$"{reader[0].ToString()}"]);
 
-                                    lv.Text = nameid[$"{reader[0].ToString()}"];
                                     lv.SubItems.Add($"{reader[1].ToString()}");
-                                    lv.SubItems.Add(type[type.Length - 1].ToString() == "„" ? "«‰’—«›" : "Õ÷Ê—");
-                                    Dictionary<string, dynamic> z = new Dictionary<string, dynamic>();
-                                    z.Add("name", "alimaher");
-                                    z.Add("date", "22/5/202");
-                                    z.Add("time", "4:10");
+                                    lv.SubItems.Add(found.Keys.Contains($"{nameid[$"{reader[0].ToString()}"]}-{pareseddate.ToShortDateString()}") ? "«‰’—«›" : "Õ÷Ê—");
 
+                                    if (!found.Keys.Contains($"{nameid[$"{reader[0].ToString()}"]}-{pareseddate.ToShortDateString()}")){ found.Add($"{nameid[$"{reader[0].ToString()}"]}-{pareseddate.ToShortDateString()}", "found"); }
+                                    Dictionary<string, dynamic> z = new Dictionary<string, dynamic>();
+                                    z.Add("name", nameid[$"{reader[0].ToString()}"]);
+                                    z.Add("date",pareseddate.ToShortDateString());
+                                    z.Add("time", paresedtime);
                                     attendances.Add(z);
                                     listView1.Items.Add(lv);
+                                    index++;
 
 
                                 }
@@ -130,7 +136,7 @@ namespace fingerprint
                 button1.Text = "⁄—÷";
                 button1.Enabled = true;
 
-                MessageBox.Show($"{ex.ToString}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"{ex.ToString()}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             }
         }
