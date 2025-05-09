@@ -106,6 +106,7 @@ namespace fingerprint
                                     z.Add("name", nameid[$"{reader[0].ToString()}"]);
                                     z.Add("date",pareseddate.ToShortDateString());
                                     z.Add("time", paresedtime);
+                                    z.Add("status", found.Keys.Contains($"{nameid[$"{reader[0].ToString()}"]}-{pareseddate.ToShortDateString()}") ? "«‰’—«›" : "Õ÷Ê—");
                                     attendances.Add(z);
                                     listView1.Items.Add(lv);
                                     index++;
@@ -119,13 +120,22 @@ namespace fingerprint
                 }
 
                 //  ApiService.PostAttendancesAsync(attendances)
-                Console.WriteLine(attendances.Count.ToString());
-                /*  foreach (var attend in attendances)
-                  {
-                      Console.WriteLine("{" + string.Join(",", attend.Select(kvp => $"{kvp.Key}:{kvp.Value}")) + "}"); 
+                /* Console.WriteLine(attendances.Count.ToString());
+                  foreach (var attend in attendances)
+                   {
+                       Console.WriteLine("{" + string.Join(",", attend.Select(kvp => $"{kvp.Key}:{kvp.Value}")) + "}"); 
 
-                  }*/
-                // Console.WriteLine("{" + string.Join(",", attend.Select(kvp => $"{kvp.Key}:{kvp.Value}")) + "}"); 
+                   }
+                 // Console.WriteLine("{" + string.Join(",", attend.Select(kvp => $"{kvp.Key}:{kvp.Value}")) + "}"); 
+                */
+
+
+                if (attendances.Count == 0)
+                {
+                    //hgghvghvghvgh
+                    MessageBox.Show($"·« ÌÊÃœ Õ÷Ê— Ê«‰’—«› ›Ì  ﬂ «·„œÂ", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                }
                 button1.Text = "⁄—÷";
                 button1.Enabled = true;
 
@@ -171,7 +181,6 @@ namespace fingerprint
                 string status = await ApiService.PostAttendancesAsync(attendances);
                 button2.Text = " Õ„Ì·";
                 button2.Enabled = true;
-
                 MessageBox.Show($"{status}", "«· √ﬂÌœ", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 
