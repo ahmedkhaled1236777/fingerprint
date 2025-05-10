@@ -85,7 +85,9 @@ namespace fingerprint
                             while (reader.Read())
                             {
                                 DateTime pareseddate = DateTime.Parse($"{reader[1].ToString()}").Date;
-                                string paresedtime = DateTime.Parse($"{reader[1].ToString()}").ToString("hh:mm:ss tt");
+                                string paresedtime = DateTime.Parse($"{reader[1].ToString()}").ToString("HH:mm:ss");
+                                string[] parts = pareseddate.ToShortDateString().Split('/');
+                                string finisheddate = $"{parts[2]}-{parts[1]}-{parts[0]}";
 
 
 
@@ -103,10 +105,10 @@ namespace fingerprint
 
                                     if (!found.Keys.Contains($"{nameid[$"{reader[0].ToString()}"]}-{pareseddate.ToShortDateString()}")){ found.Add($"{nameid[$"{reader[0].ToString()}"]}-{pareseddate.ToShortDateString()}", "found"); }
                                     Dictionary<string, dynamic> z = new Dictionary<string, dynamic>();
-                                    z.Add("name", nameid[$"{reader[0].ToString()}"]);
-                                    z.Add("date",pareseddate.ToShortDateString());
-                                    z.Add("time", paresedtime);
-                                    z.Add("status", found.Keys.Contains($"{nameid[$"{reader[0].ToString()}"]}-{pareseddate.ToShortDateString()}") ? "ÇäÕÑÇÝ" : "ÍÖæÑ");
+                                    z.Add("employer_name", nameid[$"{reader[0].ToString()}"]);
+                                    z.Add("date", finisheddate);
+                                    z.Add("time", paresedtime.Split(' ')[0]);
+                                    z.Add("status", found.Keys.Contains($"{nameid[$"{reader[0].ToString()}"]}-{pareseddate.ToShortDateString()}") ? "0" : "1");
                                     attendances.Add(z);
                                     listView1.Items.Add(lv);
                                     index++;
@@ -120,14 +122,14 @@ namespace fingerprint
                 }
 
                 //  ApiService.PostAttendancesAsync(attendances)
-                /* Console.WriteLine(attendances.Count.ToString());
+                Console.WriteLine(attendances.Count.ToString());
                   foreach (var attend in attendances)
                    {
                        Console.WriteLine("{" + string.Join(",", attend.Select(kvp => $"{kvp.Key}:{kvp.Value}")) + "}"); 
 
                    }
                  // Console.WriteLine("{" + string.Join(",", attend.Select(kvp => $"{kvp.Key}:{kvp.Value}")) + "}"); 
-                */
+                
 
 
                 if (attendances.Count == 0)

@@ -13,27 +13,30 @@ public class ApiService
         try
         {
             using HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("https://api.yourdomain.com/");
+            client.BaseAddress = new Uri("https://warehousepk.store/warehouses/public/api/");
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // Using Newtonsoft.Json for serialization
             var json = JsonConvert.SerializeObject(attendances);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = await client.PostAsync("attendances", content);
+            HttpResponseMessage response = await client.PostAsync("employer-moves", content);
+            var responseString = await response.Content.ReadAsStringAsync();
 
+            // Option 1: Dynamic approach
+            dynamic responseData = JsonConvert.DeserializeObject(responseString);
             if (response.IsSuccessStatusCode)
             {
-                var responseString = await response.Content.ReadAsStringAsync();
+                bool status = responseData.success; // Assuming response has
 
-                // Option 1: Dynamic approach
-                dynamic responseData = JsonConvert.DeserializeObject(responseString);
-                bool status = responseData.status; // Assuming response has a 'status' field
-                if(status)
+                // Assuming response has a 'status' field
+                if (status)
                 return "تم التحميل بنجاح ";
                 else
                 {
-                    return responseData.message;
+                    if (responseData.errors != null)
+                        return responseData.errors[0];
+                    else return responseData.message;
 
                 }
                 // Option 2: Strongly-typed approach (recommended)
@@ -45,7 +48,7 @@ public class ApiService
                 // return responseData.Status;
             }else
             {
-                return "يوجد خطأ برجاء المحاوله مره اخري";
+                return responseData.message;
             }
            
         }
