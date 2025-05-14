@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
+using fingerprint.methods;
 
 namespace fingerprint
 
@@ -15,6 +16,8 @@ namespace fingerprint
 {
     public partial class Form1 : Form
     {
+        List<string> weekends = new List<string>();
+        Dictionary<string, String> found = new Dictionary<string, string>();
 
 
         List<Dictionary<String, dynamic>> attendances = new List<Dictionary<String, dynamic>>();
@@ -30,6 +33,10 @@ namespace fingerprint
 
         private void button1_Click(object sender, EventArgs e)
         {
+            weekends.Clear();
+            calculatedate.calulatechosendates(dateTimePicker1, dateTimePicker2, weekends);
+
+
             attendances.Clear();
             int index = 1;
             // Configure these values for your Access file
@@ -55,7 +62,6 @@ namespace fingerprint
                     OleDbCommand command = new OleDbCommand(query, connection);
                     OleDbCommand command2 = new OleDbCommand(query2, connection);
                     Dictionary<string, String> nameid = new Dictionary<string, string>();
-                    Dictionary<string, String> found = new Dictionary<string, string>();
 
                     using (OleDbDataReader reader2 = command2.ExecuteReader())
                     {
@@ -103,15 +109,17 @@ namespace fingerprint
                                     lv.SubItems.Add($"{reader[1].ToString()}");
                                     lv.SubItems.Add(found.Keys.Contains($"{nameid[$"{reader[0].ToString()}"]}-{pareseddate.ToShortDateString()}") ? "«‰’—«›" : "Õ÷Ê—");
 
-                                    if (!found.Keys.Contains($"{nameid[$"{reader[0].ToString()}"]}-{pareseddate.ToShortDateString()}")){ found.Add($"{nameid[$"{reader[0].ToString()}"]}-{pareseddate.ToShortDateString()}", "found"); }
                                     Dictionary<string, dynamic> z = new Dictionary<string, dynamic>();
                                     z.Add("employer_name", nameid[$"{reader[0].ToString()}"]);
                                     z.Add("date", finisheddate);
                                     z.Add("time", paresedtime.Split(' ')[0]);
                                     z.Add("status", found.Keys.Contains($"{nameid[$"{reader[0].ToString()}"]}-{pareseddate.ToShortDateString()}") ? "0" : "1");
+
+                                    Console.WriteLine(found.Keys.Contains($"{nameid[$"{reader[0].ToString()}"]}-{pareseddate.ToShortDateString()}") ? "1" : "0");
                                     attendances.Add(z);
                                     listView1.Items.Add(lv);
                                     index++;
+                                    if (!found.Keys.Contains($"{nameid[$"{reader[0].ToString()}"]}-{pareseddate.ToShortDateString()}")) { found.Add($"{nameid[$"{reader[0].ToString()}"]}-{pareseddate.ToShortDateString()}", "found"); }
 
 
                                 }
@@ -122,12 +130,12 @@ namespace fingerprint
                 }
 
                 //  ApiService.PostAttendancesAsync(attendances)
-                Console.WriteLine(attendances.Count.ToString());
-                  foreach (var attend in attendances)
+               /* Console.WriteLine(attendances.Count.ToString());
+                  foreach (var attend in found)
                    {
-                       Console.WriteLine("{" + string.Join(",", attend.Select(kvp => $"{kvp.Key}:{kvp.Value}")) + "}"); 
+                       Console.WriteLine(attend.Key); 
 
-                   }
+                   }*/
                  // Console.WriteLine("{" + string.Join(",", attend.Select(kvp => $"{kvp.Key}:{kvp.Value}")) + "}"); 
                 
 
@@ -178,9 +186,11 @@ namespace fingerprint
             }
             else
             {
+                string status;
                 button2.Text = "Ã«—Ì «· Õ„Ì·";
                 button2.Enabled = false;
-                string status = await ApiService.PostAttendancesAsync(attendances);
+               status = await ApiService.PostAttendancesAsync(attendances, "employer-moves");
+             //  status = await ApiService.PostAttendancesAsync(weekends, "weekends");
                 button2.Text = " Õ„Ì·";
                 button2.Enabled = true;
                 MessageBox.Show($"{status}", "«· √ﬂÌœ", MessageBoxButtons.OK, MessageBoxIcon.Information);

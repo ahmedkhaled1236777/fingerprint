@@ -8,7 +8,7 @@ using Newtonsoft.Json; // Stick with one JSON library
 
 public class ApiService
 {
-    public static async Task<dynamic> PostAttendancesAsync(List<Dictionary<string, dynamic>> attendances)
+    public static async Task<dynamic> PostAttendancesAsync(dynamic attendances,string endpoint)
     {
         try
         {
@@ -20,7 +20,7 @@ public class ApiService
             var json = JsonConvert.SerializeObject(attendances);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = await client.PostAsync("employer-moves", content);
+            HttpResponseMessage response = await client.PostAsync(endpoint, content);
             var responseString = await response.Content.ReadAsStringAsync();
 
             // Option 1: Dynamic approach

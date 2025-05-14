@@ -33,12 +33,12 @@
             columnHeader2 = new ColumnHeader();
             columnHeader3 = new ColumnHeader();
             columnHeader1 = new ColumnHeader();
+            columnHeader4 = new ColumnHeader();
             dateTimePicker1 = new DateTimePicker();
             dateTimePicker2 = new DateTimePicker();
             label1 = new Label();
             label2 = new Label();
             button2 = new Button();
-            columnHeader4 = new ColumnHeader();
             SuspendLayout();
             // 
             // button1
@@ -83,6 +83,12 @@
             columnHeader1.TextAlign = HorizontalAlignment.Center;
             columnHeader1.Width = 300;
             // 
+            // columnHeader4
+            // 
+            columnHeader4.Text = "الحاله";
+            columnHeader4.TextAlign = HorizontalAlignment.Center;
+            columnHeader4.Width = 120;
+            // 
             // dateTimePicker1
             // 
             dateTimePicker1.Location = new Point(508, 41);
@@ -126,12 +132,6 @@
             button2.Text = "تحميل";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
-            // 
-            // columnHeader4
-            // 
-            columnHeader4.Text = "الحاله";
-            columnHeader4.TextAlign = HorizontalAlignment.Center;
-            columnHeader4.Width = 120;
             // 
             // Form1
             // 
