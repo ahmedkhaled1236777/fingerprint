@@ -10,6 +10,7 @@ public class ApiService
 {
     public static async Task<dynamic> PostAttendancesAsync(dynamic attendances,string endpoint)
     {
+
         try
         {
             using HttpClient client = new HttpClient();

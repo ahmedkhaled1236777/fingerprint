@@ -17,7 +17,6 @@ namespace fingerprint
     public partial class Form1 : Form
     {
         List<string> weekends = new List<string>();
-        Dictionary<string, String> found = new Dictionary<string, string>();
 
 
         List<Dictionary<String, dynamic>> attendances = new List<Dictionary<String, dynamic>>();
@@ -35,6 +34,7 @@ namespace fingerprint
         {
             weekends.Clear();
             calculatedate.calulatechosendates(dateTimePicker1, dateTimePicker2, weekends);
+            Dictionary<string, String> found = new Dictionary<string, string>();
 
 
             attendances.Clear();
@@ -115,7 +115,6 @@ namespace fingerprint
                                     z.Add("time", paresedtime.Split(' ')[0]);
                                     z.Add("status", found.Keys.Contains($"{nameid[$"{reader[0].ToString()}"]}-{pareseddate.ToShortDateString()}") ? "0" : "1");
 
-                                    Console.WriteLine(found.Keys.Contains($"{nameid[$"{reader[0].ToString()}"]}-{pareseddate.ToShortDateString()}") ? "1" : "0");
                                     attendances.Add(z);
                                     listView1.Items.Add(lv);
                                     index++;
@@ -189,9 +188,12 @@ namespace fingerprint
                 string status;
                 button2.Text = "Ã«—Ì «· Õ„Ì·";
                 button2.Enabled = false;
+                Dictionary<string, dynamic> myweekends = new Dictionary<string, dynamic>();
+                myweekends.Add("dates",weekends );
                status = await ApiService.PostAttendancesAsync(attendances, "employer-moves");
-             //  status = await ApiService.PostAttendancesAsync(weekends, "weekends");
+              status = await ApiService.PostAttendancesAsync(myweekends, "offecial_hlidays");
                 button2.Text = " Õ„Ì·";
+               
                 button2.Enabled = true;
                 MessageBox.Show($"{status}", "«· √ﬂÌœ", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
