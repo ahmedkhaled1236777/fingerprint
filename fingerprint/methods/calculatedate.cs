@@ -13,7 +13,7 @@ namespace fingerprint.methods
         {
             for (DateTime date = dateTimePicker1.Value.Date; date < dateTimePicker2.Value.Date; date = date.AddDays(1))
             {
-                if (date.DayOfWeek == DayOfWeek.Saturday)
+                if (date.DayOfWeek == DayOfWeek.Sunday)
                 {
                     string[] parts = date.ToShortDateString().Split('/');
                     string finisheddate = $"{parts[2]}-{parts[1]}-{parts[0]}";
